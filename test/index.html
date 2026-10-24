@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>wickedElements</title>
+  <script src="../min.js"></script>
+  <script>
+  this.onload = function () {
+    wickedElements.define('[is="wicked-element"]', {
+      observedAttributes: [],
+      init: function (event) {
+        this.el = event.currentTarget;
+        var json = this.el.dataset.json;
+        if (json)
+          this.ondata({detail: JSON.parse(json)});
+      },
+      ondata(event) {
+        this.data = event.detail;
+        log(this.data);
+      },
+      onclick: function (event) {
+        log(event.type);
+      },
+      ondblclick: function (event) {
+        log(event.type);
+        this.el.parentNode.removeChild(this.el);
+      },
+      onconnected: function (event) {
+        log(event.type);
+      },
+      ondisconnected: function (event) {
+        log(event.type);
+      },
+      onattributechanged: function (event) {
+        if (event.attributeName === 'data-json')
+          this.ondata({detail: JSON.parse(event.newValue || '{}')});
+        log(event.attributeName);
+      }
+    });
+    setTimeout(function () {
+      document.querySelector('button').setAttribute('test', 123);
+    }, 1000);
+    function log() {
+      document.body.appendChild(
+        document.createElement('div')
+      ).textContent = [].join.call(arguments, ', ');
+    }
+  };
+  </script>
+</head>
+<body>
+  <button is="wicked-element">click test</button>
+</body>
+</html>

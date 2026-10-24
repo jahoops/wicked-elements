@@ -1,0 +1,43 @@
+{
+  "name": "wicked-elements",
+  "version": "0.4.5",
+  "description": "Components for the DOM as you've never seen before",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "unpkg": "min.js",
+  "scripts": {
+    "build": "ascjs esm cjs && rollup --config rollup.config.js && npm run cleanup && npm run min && npm run size",
+    "min": "echo \"/*! (c) Andrea Giammarchi (ISC) */$(uglifyjs index.js --support-ie8 -c -m)\" > min.js",
+    "size": "cat min.js | gzip -9 | wc -c && cat min.js | brotli | wc -c",
+    "cleanup": "cat index.js|sed 's/(exports)/(Object)/'|sed 's/return exports;/return wickedElements;/'|sed -e 's/exports.*;//g'|sed 's/({})/(Object)/'>index.clean&&mv index.clean index.js",
+    "test": "echo 'use http-server and browse the test folder'"
+  },
+  "author": "Andrea Giammarchi",
+  "license": "ISC",
+  "devDependencies": {
+    "ascjs": "^3.0.1",
+    "rollup": "^1.10.1",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "uglify-js": "^3.5.9"
+  },
+  "dependencies": {
+    "@ungap/weakset": "^0.1.5",
+    "regular-elements": "^0.4.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/wicked-elements.git"
+  },
+  "keywords": [
+    "dom",
+    "custom",
+    "regular",
+    "elements",
+    "define",
+    "behavior"
+  ],
+  "bugs": {
+    "url": "https://github.com/WebReflection/wicked-elements/issues"
+  },
+  "homepage": "https://github.com/WebReflection/wicked-elements#readme"
+}
